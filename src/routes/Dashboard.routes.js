@@ -10,6 +10,7 @@ import DeliveryRoutes from '~/routes/Delivery.routes';
 import colors from '~/styles/colors';
 
 const Tab = createBottomTabNavigator();
+const iconSize = 26;
 
 export default function Dashboard() {
   return (
@@ -18,12 +19,24 @@ export default function Dashboard() {
       <Tab.Navigator
         tabBarOptions={{
           activeTintColor: colors.primary,
+          labelStyle: {
+            fontSize: 15,
+          },
+          style: {
+            height: 100,
+            paddingTop: 10,
+            shadowColor: '#000',
+            shadowOffset: { width: 1, height: 1 },
+            shadowOpacity: 0.2,
+            shadowRadius: 3,
+            elevation: 5,
+          },
         }}>
         <Tab.Screen
           name="Entregas"
           options={{
-            tabBarIcon: ({ color, size }) => (
-              <Icon name="reorder" size={size} color={color} />
+            tabBarIcon: ({ color }) => (
+              <Icon name="reorder" size={iconSize} color={color} />
             ),
           }}
           component={DeliveryRoutes}
@@ -32,8 +45,8 @@ export default function Dashboard() {
           name="Profile"
           options={{
             tabBarLabel: 'Meu Perfil',
-            tabBarIcon: ({ color, size }) => (
-              <Icon name="account-circle" size={size} color={color} />
+            tabBarIcon: ({ color }) => (
+              <Icon name="account-circle" size={iconSize} color={color} />
             ),
           }}
           component={Profile}
