@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import { parseISO, format } from 'date-fns';
@@ -51,17 +51,18 @@ import {
 } from './styles';
 
 function Dashboard({ isFocused, navigation }) {
+  const dispatch = useDispatch();
+
   const [packages, setPackages] = useState([]);
-  const [isConcluded, setIsConcluded] = useState(false);
+  const [finished, setFinished] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const user = useSelector((state) => state.user.profile);
   const userId = useSelector((state) => state.auth.id);
-  const dispatch = useDispatch();
 
   async function loadPackages(concluded) {
     setLoading(true);
-    console.tron.log('LOADING >>>>>>');
+
     try {
       const { data } = await api.get(`deliveryman/${userId}/deliveries`, {
         params: {
@@ -74,26 +75,30 @@ function Dashboard({ isFocused, navigation }) {
         data.map((item) => {
           const obj = {
             ...item,
+            createdAt: format(parseISO(item.createdAt), 'dd/MM/yyyy'),
             key: key < 10 ? `0${key}` : key,
-            awaitingWithdrawal: !item.start_date,
+            withdrawn: !!item.start_date,
             delivered: !!item.end_date,
           };
           key += 1;
           return obj;
         })
       );
-    } catch (error) {}
+    } catch (error) {
+      console.tron.log('Erro!!');
+      console.tron.log(error);
+    }
 
     setLoading(false);
   }
 
   useEffect(() => {
-    loadPackages(isConcluded);
-  }, [isFocused, isConcluded]);
+    loadPackages(finished);
+  }, [isFocused, finished]);
 
   useEffect(() => {
-    loadPackages(isConcluded);
-  }, [isConcluded]);
+    loadPackages(finished);
+  }, [finished]);
 
   function handleLogout() {
     dispatch(signOut());
@@ -104,8 +109,8 @@ function Dashboard({ isFocused, navigation }) {
       <Spinner
         visible={loading}
         animation="fade"
-        overlayColor="rgba(0,0,0,0.8)"
-        textContent="Carregando dados"
+        overlayColor="rgba(0,0,0,0.6)"
+        textContent="Carregando..."
         textStyle={{ color: '#fff' }}
       />
       <Header>
@@ -130,15 +135,11 @@ function Dashboard({ isFocused, navigation }) {
         <Heading>
           <Title>Entregas</Title>
           <Filters>
-            <Pending
-              active={!isConcluded}
-              onPress={() => setIsConcluded(false)}>
-              <TextFilter active={!isConcluded}>Pendentes</TextFilter>
+            <Pending active={!finished} onPress={() => setFinished(false)}>
+              <TextFilter active={!finished}>Pendentes</TextFilter>
             </Pending>
-            <HandedOut
-              active={isConcluded}
-              onPress={() => setIsConcluded(true)}>
-              <TextFilter active={isConcluded}>Entregues</TextFilter>
+            <HandedOut active={finished} onPress={() => setFinished(true)}>
+              <TextFilter active={finished}>Entregues</TextFilter>
             </HandedOut>
           </Filters>
         </Heading>
@@ -162,7 +163,7 @@ function Dashboard({ isFocused, navigation }) {
                   <Ellipses>
                     <Line />
                     <Ellipse complete />
-                    <Ellipse complete={!item.awaitingWithdrawal} />
+                    <Ellipse complete={item.withdrawn} />
                     <Ellipse complete={item.delivered} />
                   </Ellipses>
                   <StatusTextContent>
@@ -175,7 +176,7 @@ function Dashboard({ isFocused, navigation }) {
               <CardFooter>
                 <Info>
                   <Label>Data</Label>
-                  <Text>{format(parseISO(item.createdAt), 'dd/MM/yyyy')}</Text>
+                  <Text>{item.createdAt}</Text>
                 </Info>
                 <Info>
                   <Label>Cidade</Label>
