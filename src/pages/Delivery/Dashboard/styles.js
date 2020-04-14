@@ -63,7 +63,7 @@ export const Logout = styled.TouchableOpacity`
 
 export const Content = styled.View`
   margin-top: 21px;
-  padding: 20px 25px 0 15px;
+  padding: 20px 25px 108px 15px;
 `;
 
 export const List = styled.FlatList.attrs({
@@ -121,7 +121,7 @@ export const Card = styled.View`
   border: 1px solid #0000001a;
   border-radius: 4px;
   margin-top: 9px;
-  margin-bottom: 28px;
+  margin-bottom: 20px;
   background: #fff;
 `;
 
@@ -227,7 +227,7 @@ export const DetailText = styled.Text`
 
 export const NotRegister = styled.View`
   width: 100%;
-  height: 55px;
+  height: 59px;
   align-content: center;
   justify-content: center;
   border-radius: 4px;

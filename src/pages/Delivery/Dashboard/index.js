@@ -142,11 +142,9 @@ function Dashboard({ isFocused, navigation }) {
             </HandedOut>
           </Filters>
         </Heading>
-        {packages.length === 0 && (
+        {packages.length === 0 && !loading && (
           <NotRegister>
-            <TextNotRegister>
-              Não existem dados para serem exibos
-            </TextNotRegister>
+            <TextNotRegister>Não foram encontrados registros</TextNotRegister>
           </NotRegister>
         )}
 
