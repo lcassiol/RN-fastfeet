@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
+
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import { parseISO, format } from 'date-fns';
 
-import Icon from 'react-native-vector-icons/MaterialIcons';
-
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Spinner from 'react-native-loading-spinner-overlay';
 
 import { signOut } from '~/store/modules/auth/actions';
-
 import api from '~/services/api';
 
 import {
@@ -60,7 +59,7 @@ function Dashboard({ isFocused, navigation }) {
   const user = useSelector((state) => state.user.profile);
   const userId = useSelector((state) => state.auth.id);
 
-  async function loadPackages(concluded) {
+  async function loadDeliveries(concluded) {
     setLoading(true);
 
     try {
@@ -93,12 +92,8 @@ function Dashboard({ isFocused, navigation }) {
   }
 
   useEffect(() => {
-    loadPackages(finished);
+    loadDeliveries(finished);
   }, [isFocused, finished]);
-
-  useEffect(() => {
-    loadPackages(finished);
-  }, [finished]);
 
   function handleLogout() {
     dispatch(signOut());
@@ -155,7 +150,7 @@ function Dashboard({ isFocused, navigation }) {
           renderItem={({ item }) => (
             <Card>
               <CardHeader>
-                <Icon name="local-shipping" size={22} color="#7D40E7" />
+                <Icon name="truck" size={22} color="#7D40E7" />
                 <CardTitle>Encomenda {item.key}</CardTitle>
               </CardHeader>
               <CardBody>
@@ -185,7 +180,7 @@ function Dashboard({ isFocused, navigation }) {
                 <Info>
                   <Details
                     onPress={() =>
-                      navigation.navigate('Detail', { delivery: item })
+                      navigation.navigate('Details', { delivery: item })
                     }>
                     <DetailText>Ver detalhes</DetailText>
                   </Details>
@@ -198,5 +193,16 @@ function Dashboard({ isFocused, navigation }) {
     </Container>
   );
 }
+
+Dashboard.propTypes = {
+  isFocused: PropTypes.bool,
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func,
+  }).isRequired,
+};
+
+Dashboard.defaultProps = {
+  isFocused: false,
+};
 
 export default Dashboard;

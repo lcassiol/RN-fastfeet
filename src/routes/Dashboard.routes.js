@@ -1,6 +1,6 @@
 import React from 'react';
 import { StatusBar } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 // import PropTypes from 'prop-types';
@@ -36,7 +36,7 @@ export default function Dashboard() {
           name="Entregas"
           options={{
             tabBarIcon: ({ color }) => (
-              <Icon name="reorder" size={iconSize} color={color} />
+              <Icon name="reorder-horizontal" size={iconSize} color={color} />
             ),
           }}
           component={DeliveryRoutes}

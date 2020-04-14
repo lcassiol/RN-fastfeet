@@ -1,5 +1,4 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import SignIn from '~/pages/SignIn';
