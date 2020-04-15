@@ -6,6 +6,7 @@ import { parseISO, format } from 'date-fns';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Spinner from 'react-native-loading-spinner-overlay';
+import { useIsFocused } from '@react-navigation/native';
 
 import { signOut } from '~/store/modules/auth/actions';
 import api from '~/services/api';
@@ -49,9 +50,10 @@ import {
   StatusTextContent,
 } from './styles';
 
-function Dashboard({ isFocused, navigation }) {
+function Dashboard({ navigation }) {
   const dispatch = useDispatch();
 
+  const isFocused = useIsFocused();
   const [packages, setPackages] = useState([]);
   const [finished, setFinished] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -59,13 +61,17 @@ function Dashboard({ isFocused, navigation }) {
   const user = useSelector((state) => state.user.profile);
   const userId = useSelector((state) => state.auth.id);
 
-  async function loadDeliveries(concluded) {
+  async function loadDeliveries() {
+    if (!isFocused) {
+      return;
+    }
+
     setLoading(true);
 
     try {
       const { data } = await api.get(`deliveryman/${userId}/deliveries`, {
         params: {
-          finished: concluded,
+          finished,
         },
       });
       let key = 1;
@@ -92,7 +98,7 @@ function Dashboard({ isFocused, navigation }) {
   }
 
   useEffect(() => {
-    loadDeliveries(finished);
+    loadDeliveries();
   }, [isFocused, finished]);
 
   function handleLogout() {
@@ -180,7 +186,9 @@ function Dashboard({ isFocused, navigation }) {
                 <Info>
                   <Details
                     onPress={() =>
-                      navigation.navigate('Details', { delivery: item })
+                      navigation.navigate('Details', {
+                        delivery: item,
+                      })
                     }>
                     <DetailText>Ver detalhes</DetailText>
                   </Details>

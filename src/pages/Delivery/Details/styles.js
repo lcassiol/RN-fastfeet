@@ -1,4 +1,4 @@
-import styled from 'styled-components/native';
+import styled, { css } from 'styled-components/native';
 
 export const CustomStatusBar = styled.SafeAreaView`
   flex: 0;
@@ -63,7 +63,7 @@ export const Text = styled(Label)`
 export const Actions = styled.View`
   padding: 0 14px;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: ${(props) => (props.single ? 'center' : 'space-between')};
   align-items: center;
   background: #f8f9fd;
   width: 335px;
@@ -76,6 +76,12 @@ export const Button = styled.TouchableOpacity`
   height: 80px;
   justify-content: center;
   align-items: center;
+
+  ${(props) =>
+    props.single &&
+    css`
+      flex: 1;
+    `}
 `;
 
 export const Separator = styled.View`

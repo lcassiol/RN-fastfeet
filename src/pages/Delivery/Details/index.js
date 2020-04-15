@@ -1,8 +1,11 @@
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 import { TouchableOpacity, View, StatusBar } from 'react-native';
 import { format, parseISO } from 'date-fns';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+
+import api from '~/services/api';
 
 import {
   Container,
@@ -23,8 +26,9 @@ import {
 } from './styles';
 
 export default function Detail({ route, navigation }) {
-  const { delivery } = route.params;
+  let { delivery } = route.params;
 
+  const userId = useSelector((state) => state.auth.id);
   const dateWithdrawal = useMemo(
     () =>
       delivery.start_date
@@ -51,6 +55,65 @@ export default function Detail({ route, navigation }) {
     return 'Pendente';
   }, [delivery.end_date, delivery.canceled_at]);
 
+  async function takeDelivery() {
+    try {
+      const { data } = await api.put(
+        `/deliveryman/${userId}/delivery/${delivery.id}`,
+        {
+          start_date: new Date(),
+        }
+      );
+
+      delivery = data;
+    } catch (error) {
+      console.tron.log(error);
+    }
+  }
+
+  function DeliveryActions() {
+    if (!delivery.end_date) {
+      if (!delivery.start_date) {
+        return (
+          <Actions single>
+            <Button single onPress={takeDelivery}>
+              <Icon name="truck" size={25} color="#7D40E7" />
+              <ButtonText>Realizar retirada</ButtonText>
+            </Button>
+          </Actions>
+        );
+      }
+
+      return (
+        <Actions>
+          <Button
+            onPress={() =>
+              navigation.navigate('SendProblem', { id: delivery.id })
+            }>
+            <Icon name="close-circle-outline" size={25} color="#E74040" />
+            <ButtonText>Informar Problema</ButtonText>
+          </Button>
+          <Separator />
+          <Button
+            onPress={() =>
+              navigation.navigate('Problems', {
+                id: delivery.id,
+                key: delivery.key,
+              })
+            }>
+            <Icon name="information-outline" size={25} color="#E7BA40" />
+            <ButtonText>Visualizar Problemas</ButtonText>
+          </Button>
+          <Separator />
+          <Button
+            onPress={() => navigation.navigate('Confirm', { id: delivery.id })}>
+            <Icon name="check-circle-outline" size={25} color="#7D40E7" />
+            <ButtonText>Confirmar Entrega</ButtonText>
+          </Button>
+        </Actions>
+      );
+    }
+  }
+
   return (
     <>
       <CustomStatusBar />
@@ -71,7 +134,7 @@ export default function Detail({ route, navigation }) {
               <Text>
                 {delivery.recipient.street}, {delivery.recipient.number},{' '}
                 {delivery.recipient.city} - {delivery.recipient.state},{' '}
-                {delivery.recipient.zip_code}
+                {delivery.recipient.postal_code}
               </Text>
 
               <Label>Produto</Label>
@@ -102,36 +165,7 @@ export default function Detail({ route, navigation }) {
             </CardBody>
           </Card>
 
-          {!delivery.end_date && (
-            <Actions>
-              <Button
-                onPress={() =>
-                  navigation.navigate('SendProblem', { id: delivery.id })
-                }>
-                <Icon name="close-circle-outline" size={25} color="#E74040" />
-                <ButtonText>Informar Problema</ButtonText>
-              </Button>
-              <Separator />
-              <Button
-                onPress={() =>
-                  navigation.navigate('Problems', {
-                    id: delivery.id,
-                    key: delivery.key,
-                  })
-                }>
-                <Icon name="information-outline" size={25} color="#E7BA40" />
-                <ButtonText>Visualizar Problemas</ButtonText>
-              </Button>
-              <Separator />
-              <Button
-                onPress={() =>
-                  navigation.navigate('Confirm', { id: delivery.id })
-                }>
-                <Icon name="check-circle-outline" size={25} color="#7D40E7" />
-                <ButtonText>Confirmar Entrega</ButtonText>
-              </Button>
-            </Actions>
-          )}
+          <DeliveryActions />
         </Content>
       </Container>
     </>
@@ -140,6 +174,14 @@ export default function Detail({ route, navigation }) {
 
 Detail.propTypes = {
   navigation: PropTypes.shape().isRequired,
+  route: PropTypes.shape({
+    params: PropTypes.shape(),
+  }).isRequired,
+  delivery: PropTypes.shape(),
+};
+
+Detail.defaultProps = {
+  delivery: {},
 };
 
 Detail.navigationOptions = ({ navigation }) => ({
