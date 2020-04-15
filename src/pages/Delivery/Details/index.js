@@ -1,7 +1,14 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
+import {
+  ActivityIndicator,
+  TouchableOpacity,
+  View,
+  StatusBar,
+  Alert,
+} from 'react-native';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
-import { TouchableOpacity, View, StatusBar } from 'react-native';
+
 import { format, parseISO } from 'date-fns';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -26,8 +33,10 @@ import {
 } from './styles';
 
 export default function Detail({ route, navigation }) {
-  let { delivery } = route.params;
+  const { delivery: deliveryItem } = route.params;
 
+  const [loading, setLoading] = useState(false);
+  const [delivery, setDelivery] = useState(deliveryItem);
   const userId = useSelector((state) => state.auth.id);
   const dateWithdrawal = useMemo(
     () =>
@@ -56,6 +65,9 @@ export default function Detail({ route, navigation }) {
   }, [delivery.end_date, delivery.canceled_at]);
 
   async function takeDelivery() {
+    setLoading(true);
+    const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+    await sleep(5000);
     try {
       const { data } = await api.put(
         `/deliveryman/${userId}/delivery/${delivery.id}`,
@@ -64,10 +76,12 @@ export default function Detail({ route, navigation }) {
         }
       );
 
-      delivery = data;
+      setDelivery(data);
     } catch (error) {
+      Alert('Erro ao realizar retirada', 'tente novamente em alguns minutos');
       console.tron.log(error);
     }
+    setLoading(false);
   }
 
   function DeliveryActions() {
@@ -75,10 +89,14 @@ export default function Detail({ route, navigation }) {
       if (!delivery.start_date) {
         return (
           <Actions single>
-            <Button single onPress={takeDelivery}>
-              <Icon name="truck" size={25} color="#7D40E7" />
-              <ButtonText>Realizar retirada</ButtonText>
-            </Button>
+            {loading ? (
+              <ActivityIndicator size="large" color="#7D40E7" />
+            ) : (
+              <Button single onPress={takeDelivery}>
+                <Icon name="truck" size={25} color="#7D40E7" />
+                <ButtonText>Realizar retirada</ButtonText>
+              </Button>
+            )}
           </Actions>
         );
       }
