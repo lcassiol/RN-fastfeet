@@ -74,18 +74,17 @@ function Dashboard({ navigation }) {
           finished,
         },
       });
-      let key = 1;
 
       setPackages(
         data.map((item) => {
           const obj = {
             ...item,
             createdAt: format(parseISO(item.createdAt), 'dd/MM/yyyy'),
-            key: key < 10 ? `0${key}` : key,
+            key: item.id < 10 ? `0${item.id}` : item.id,
             withdrawn: !!item.start_date,
             delivered: !!item.end_date,
           };
-          key += 1;
+
           return obj;
         })
       );

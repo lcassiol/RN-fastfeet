@@ -13,6 +13,7 @@ import { format, parseISO } from 'date-fns';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import api from '~/services/api';
+import CustomStatusBar from '~/components/CustomStatusBar';
 
 import {
   Container,
@@ -29,7 +30,6 @@ import {
   Separator,
   ButtonText,
   TwoRows,
-  CustomStatusBar,
 } from './styles';
 
 export default function Detail({ route, navigation }) {
@@ -105,7 +105,7 @@ export default function Detail({ route, navigation }) {
         <Actions>
           <Button
             onPress={() =>
-              navigation.navigate('SendProblem', { id: delivery.id })
+              navigation.navigate('ReportProblem', { id: delivery.id })
             }>
             <Icon name="close-circle-outline" size={25} color="#E74040" />
             <ButtonText>Informar Problema</ButtonText>
@@ -113,9 +113,8 @@ export default function Detail({ route, navigation }) {
           <Separator />
           <Button
             onPress={() =>
-              navigation.navigate('Problems', {
+              navigation.navigate('ListProblems', {
                 id: delivery.id,
-                key: delivery.key,
               })
             }>
             <Icon name="information-outline" size={25} color="#E7BA40" />

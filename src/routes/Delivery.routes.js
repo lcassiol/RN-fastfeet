@@ -2,7 +2,7 @@ import React from 'react';
 
 import { createStackNavigator } from '@react-navigation/stack';
 
-import CreateProblem from '~/pages/Delivery/CreateProblem';
+import ReportProblem from '~/pages/Delivery/ReportProblem';
 import ListProblems from '~/pages/Delivery/ListProblems';
 
 import DeliveryConfirm from '~/pages/Delivery/Confirm';
@@ -45,11 +45,11 @@ export default function DeliveryRoutes() {
         component={DeliveryConfirm}
       />
       <Stack.Screen
-        name="CreateProblem"
+        name="ReportProblem"
         options={{
           title: 'Informar problema',
         }}
-        component={CreateProblem}
+        component={ReportProblem}
       />
       <Stack.Screen
         name="ListProblems"
