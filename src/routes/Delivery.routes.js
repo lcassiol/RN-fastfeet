@@ -38,7 +38,7 @@ export default function DeliveryRoutes() {
         component={DeliveryDetails}
       />
       <Stack.Screen
-        name="DeliveryConfirm"
+        name="Confirm"
         options={{
           title: 'Confirmar entrega',
         }}
