@@ -129,6 +129,8 @@ export default function Detail({ route, navigation }) {
         </Actions>
       );
     }
+
+    return <View />;
   }
 
   return (
