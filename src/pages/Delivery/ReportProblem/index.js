@@ -34,14 +34,12 @@ export default function ReportProblem({ route, navigation }) {
         description,
       });
 
-      setLoading(false);
       setDescription('');
       setAlertMessage('Problema reportado com sucesso!');
     } catch (error) {
       setAlertMessage('Ocorreu um erro, tente novamente em alguns instantes');
-      setLoading(false);
     }
-
+    setLoading(false);
     setShowAlert(true);
   }
 

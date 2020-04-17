@@ -143,7 +143,13 @@ function Dashboard({ navigation }) {
           </Filters>
         </Heading>
         {packages.length === 0 && !loading && (
-          <EmptyResult text="Não foram encontrados registros" />
+          <EmptyResult
+            text={
+              finished
+                ? 'Nenhuma entrega finalizada'
+                : 'Você está sem nenhuma entrega!'
+            }
+          />
         )}
 
         <List

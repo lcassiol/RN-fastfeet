@@ -200,6 +200,9 @@ export default function Detail({ route, navigation }) {
             showConfirmButton
             confirmText="Ok"
             confirmButtonColor="#7d40e7"
+            onConfirmPressed={() => {
+              setShowAlert(false);
+            }}
           />
         </Content>
       </Container>

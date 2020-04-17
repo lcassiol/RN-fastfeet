@@ -11,7 +11,7 @@ export default function EmptyResult({ text }) {
 }
 
 EmptyResult.propTypes = {
-  text: PropTypes.string(),
+  text: PropTypes.string,
 };
 
 EmptyResult.defaultProps = {
