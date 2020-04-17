@@ -20,9 +20,9 @@ export default function Dashboard() {
           fontSize: 15,
         },
         style: {
-          height: 75,
-          paddingTop: 8,
-          paddingBottom: 8,
+          height: 80,
+          paddingTop: 4,
+          paddingBottom: 25,
           shadowColor: '#000',
           shadowOffset: { width: 1, height: 1 },
           shadowOpacity: 0.2,
