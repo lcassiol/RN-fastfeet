@@ -34,7 +34,6 @@ export default function ReportProblem({ route, navigation }) {
         description,
       });
 
-      setDescription('');
       setAlertMessage('Problema reportado com sucesso!');
     } catch (error) {
       setAlertMessage('Ocorreu um erro, tente novamente em alguns instantes');
@@ -72,6 +71,7 @@ export default function ReportProblem({ route, navigation }) {
             confirmText="Ok"
             confirmButtonColor="#7d40e7"
             onConfirmPressed={() => {
+              setDescription('');
               setShowAlert(false);
               navigation.goBack();
             }}
