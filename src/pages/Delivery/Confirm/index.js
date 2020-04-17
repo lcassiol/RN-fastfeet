@@ -1,9 +1,10 @@
 import React, { useState, useRef } from 'react';
-import { TouchableOpacity, Alert } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Spinner from 'react-native-loading-spinner-overlay';
+import AwesomeAlert from 'react-native-awesome-alerts';
 import CustomStatusBar from '~/components/CustomStatusBar';
 
 import api from '~/services/api';
@@ -23,6 +24,8 @@ import {
 } from './styles';
 
 export default function Confirm({ route, navigation }) {
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
   const [showCamera, setShowCamera] = useState(false);
   const [takeImage, setTakeImage] = useState('');
   const [dataImage, setDataImage] = useState({});
@@ -61,13 +64,16 @@ export default function Confirm({ route, navigation }) {
         end_date: new Date(),
       });
 
-      setLoading(false);
-      navigation.navigate('Dashboard');
+      setAlertMessage('Entrega finalizada');
+      setShowAlert(true);
     } catch (error) {
-      setLoading(false);
-
-      // Alert.alert('Erro inesperado');
+      setAlertMessage(
+        'Ocorreu um erro na entrega, tente novamente em alguns instantes.'
+      );
+      setShowAlert(true);
     }
+
+    setLoading(false);
   }
 
   return (
@@ -118,6 +124,20 @@ export default function Confirm({ route, navigation }) {
               </Button>
             </>
           )}
+          <AwesomeAlert
+            show={showAlert}
+            showProgress={false}
+            title="Info"
+            message={alertMessage}
+            closeOnHardwareBackPress={false}
+            showConfirmButton
+            confirmText="Ok"
+            confirmButtonColor="#7d40e7"
+            onConfirmPressed={() => {
+              setShowAlert(false);
+              navigation.navigate('Dashboard');
+            }}
+          />
         </Content>
       </Container>
     </>

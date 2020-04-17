@@ -4,7 +4,6 @@ import {
   TouchableOpacity,
   View,
   StatusBar,
-  Alert,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
@@ -12,6 +11,7 @@ import { useSelector } from 'react-redux';
 import { format, parseISO } from 'date-fns';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
+import AwesomeAlert from 'react-native-awesome-alerts';
 import api from '~/services/api';
 import CustomStatusBar from '~/components/CustomStatusBar';
 
@@ -37,6 +37,8 @@ export default function Detail({ route, navigation }) {
 
   const [loading, setLoading] = useState(false);
   const [delivery, setDelivery] = useState(deliveryItem);
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
   const userId = useSelector((state) => state.auth.id);
   const dateWithdrawal = useMemo(
     () =>
@@ -77,10 +79,14 @@ export default function Detail({ route, navigation }) {
       );
 
       setDelivery(data);
+      setAlertMessage('Encomenda retirada com sucesso!');
     } catch (error) {
-      Alert('Erro ao realizar retirada', 'tente novamente em alguns minutos');
+      setAlertMessage(
+        'Erro ao realizar retirada tente novamente em alguns minutos'
+      );
       console.tron.log(error);
     }
+    setShowAlert(true);
     setLoading(false);
   }
 
@@ -185,6 +191,16 @@ export default function Detail({ route, navigation }) {
           </Card>
 
           <DeliveryActions />
+          <AwesomeAlert
+            show={showAlert}
+            showProgress={false}
+            title="Info"
+            message={alertMessage}
+            closeOnHardwareBackPress={false}
+            showConfirmButton
+            confirmText="Ok"
+            confirmButtonColor="#7d40e7"
+          />
         </Content>
       </Container>
     </>

@@ -26,10 +26,7 @@ export function* singIn({ payload }) {
       })
     );
   } catch (err) {
-    Alert.alert(
-      'Falha na autenticação',
-      'Verifique se sua identificação está correta'
-    );
+    Alert.alert('Falha na autenticação', 'Verifique sua identificação');
     yield put(signInFailure());
   }
 }

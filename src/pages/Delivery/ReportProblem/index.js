@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { TouchableOpacity, Alert } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Spinner from 'react-native-loading-spinner-overlay';
 import AwesomeAlert from 'react-native-awesome-alerts';
@@ -23,6 +23,7 @@ export default function ReportProblem({ route, navigation }) {
 
   const [loading, setLoading] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
   const [description, setDescription] = useState('');
 
   async function handleSubmit() {
@@ -33,16 +34,15 @@ export default function ReportProblem({ route, navigation }) {
         description,
       });
 
-      setShowAlert(true);
       setLoading(false);
       setDescription('');
+      setAlertMessage('Problema reportado com sucesso!');
     } catch (error) {
+      setAlertMessage('Ocorreu um erro, tente novamente em alguns instantes');
       setLoading(false);
-      Alert.alert(
-        'Ocorreu um erro no envio do problema',
-        'Tente novamente mais tarde'
-      );
     }
+
+    setShowAlert(true);
   }
 
   return (
@@ -68,7 +68,7 @@ export default function ReportProblem({ route, navigation }) {
             show={showAlert}
             showProgress={false}
             title="Info"
-            message="Problema reportado com sucesso!"
+            message={alertMessage}
             closeOnHardwareBackPress={false}
             showConfirmButton
             confirmText="Ok"
