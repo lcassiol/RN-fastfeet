@@ -55,27 +55,27 @@ function Dashboard({ navigation }) {
   const isFocused = useIsFocused();
   const [packages, setPackages] = useState([]);
   const [finished, setFinished] = useState(false);
+  const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
 
   const user = useSelector((state) => state.user.profile);
   const userId = useSelector((state) => state.auth.id);
 
-  async function loadDeliveries() {
-    if (!isFocused) {
-      return;
-    }
-
-    setLoading(true);
-
+  async function loadDeliveries(currentPage = 1) {
     try {
       const { data } = await api.get(`deliveryman/${userId}/deliveries`, {
         params: {
           finished,
+          page: currentPage,
         },
       });
 
-      setPackages(
-        data.map((item) => {
+      if (data.length === 0) {
+        if (currentPage === 1) {
+          setPackages([]);
+        }
+      } else {
+        const newPackages = data.map((item) => {
           const obj = {
             ...item,
             key: item.id < 10 ? `0${item.id}` : item.id,
@@ -85,21 +85,45 @@ function Dashboard({ navigation }) {
           };
 
           return obj;
-        })
-      );
+        });
+
+        setPage(currentPage);
+
+        if (currentPage === 1) {
+          setPackages(newPackages);
+        } else {
+          setPackages([...packages, ...newPackages]);
+        }
+      }
+
+      setLoading(false);
+      console.tron.log(packages);
     } catch (error) {
       console.tron.log(error);
     }
-
-    setLoading(false);
   }
 
   useEffect(() => {
+    if (!isFocused) {
+      return;
+    }
+
+    setLoading(true);
     loadDeliveries();
   }, [isFocused, finished]);
 
   function handleLogout() {
     dispatch(signOut());
+  }
+
+  function changeStatus(finish) {
+    setPage(1);
+    setFinished(finish);
+  }
+
+  function loadMore() {
+    const currentPage = page + 1;
+    loadDeliveries(currentPage);
   }
 
   return (
@@ -133,10 +157,10 @@ function Dashboard({ navigation }) {
         <Heading>
           <Title>Entregas</Title>
           <Filters>
-            <Pending active={!finished} onPress={() => setFinished(false)}>
+            <Pending active={!finished} onPress={() => changeStatus(false)}>
               <TextFilter active={!finished}>Pendentes</TextFilter>
             </Pending>
-            <HandedOut active={finished} onPress={() => setFinished(true)}>
+            <HandedOut active={finished} onPress={() => changeStatus(true)}>
               <TextFilter active={finished}>Entregues</TextFilter>
             </HandedOut>
           </Filters>
@@ -154,6 +178,8 @@ function Dashboard({ navigation }) {
         <List
           data={packages}
           keyExtractor={(item) => String(item.id)}
+          onEndReached={loadMore}
+          onEndReachedThreshold={0.2}
           renderItem={({ item }) => (
             <Card>
               <CardHeader>
