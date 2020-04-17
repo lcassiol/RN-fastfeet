@@ -145,7 +145,7 @@ export default function Detail({ route, navigation }) {
     <>
       <CustomStatusBar />
       <Container>
-        <StatusBar barStyle="light-content" />
+        <StatusBar barStyle="light-content" backgroundColor="#7d40e7" />
         <Background />
         <Content>
           <Card>

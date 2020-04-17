@@ -1,4 +1,5 @@
 import React from 'react';
+import { StatusBar } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { signOut } from '~/store/modules/auth/actions';

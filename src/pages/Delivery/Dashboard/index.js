@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { StatusBar } from 'react-native';
 
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
@@ -96,11 +97,11 @@ function Dashboard({ navigation }) {
         }
       }
 
-      setLoading(false);
       console.tron.log(packages);
     } catch (error) {
       console.tron.log(error);
     }
+    setLoading(false);
   }
 
   useEffect(() => {
@@ -110,6 +111,7 @@ function Dashboard({ navigation }) {
 
     setLoading(true);
     loadDeliveries();
+    setLoading(false);
   }, [isFocused, finished]);
 
   function handleLogout() {
@@ -128,6 +130,7 @@ function Dashboard({ navigation }) {
 
   return (
     <Container>
+      <StatusBar backgroundColor="#fff" barStyle="dark-content" />
       <Spinner
         visible={loading}
         animation="fade"

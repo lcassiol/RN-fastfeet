@@ -1,5 +1,4 @@
 import React from 'react';
-import { StatusBar } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -14,44 +13,42 @@ const iconSize = 26;
 
 export default function Dashboard() {
   return (
-    <>
-      <StatusBar backgroundColor="#fff" barStyle="dark-content" />
-      <Tab.Navigator
-        tabBarOptions={{
-          activeTintColor: colors.primary,
-          labelStyle: {
-            fontSize: 15,
-          },
-          style: {
-            height: 100,
-            paddingTop: 10,
-            shadowColor: '#000',
-            shadowOffset: { width: 1, height: 1 },
-            shadowOpacity: 0.2,
-            shadowRadius: 3,
-            elevation: 5,
-          },
-        }}>
-        <Tab.Screen
-          name="Entregas"
-          options={{
-            tabBarIcon: ({ color }) => (
-              <Icon name="reorder-horizontal" size={iconSize} color={color} />
-            ),
-          }}
-          component={DeliveryRoutes}
-        />
-        <Tab.Screen
-          name="Profile"
-          options={{
-            tabBarLabel: 'Meu Perfil',
-            tabBarIcon: ({ color }) => (
-              <Icon name="account-circle" size={iconSize} color={color} />
-            ),
-          }}
-          component={Profile}
-        />
-      </Tab.Navigator>
-    </>
+    <Tab.Navigator
+      tabBarOptions={{
+        activeTintColor: colors.primary,
+        labelStyle: {
+          fontSize: 15,
+        },
+        style: {
+          height: 75,
+          paddingTop: 8,
+          paddingBottom: 8,
+          shadowColor: '#000',
+          shadowOffset: { width: 1, height: 1 },
+          shadowOpacity: 0.2,
+          shadowRadius: 3,
+          elevation: 5,
+        },
+      }}>
+      <Tab.Screen
+        name="Entregas"
+        options={{
+          tabBarIcon: ({ color }) => (
+            <Icon name="reorder-horizontal" size={iconSize} color={color} />
+          ),
+        }}
+        component={DeliveryRoutes}
+      />
+      <Tab.Screen
+        name="Profile"
+        options={{
+          tabBarLabel: 'Meu Perfil',
+          tabBarIcon: ({ color }) => (
+            <Icon name="account-circle" size={iconSize} color={color} />
+          ),
+        }}
+        component={Profile}
+      />
+    </Tab.Navigator>
   );
 }

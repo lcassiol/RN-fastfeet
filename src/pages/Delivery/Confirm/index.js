@@ -55,7 +55,7 @@ export default function Confirm({ route, navigation }) {
         uri: dataImage.uri,
         name: 'signature.jpg',
         originalname: 'signature.jpg',
-        type: 'image/jpeg',
+        type: 'image/jpg',
       });
       const response = await api.post('/files', data);
 
@@ -71,6 +71,7 @@ export default function Confirm({ route, navigation }) {
         'Ocorreu um erro na entrega, tente novamente em alguns instantes.'
       );
       setShowAlert(true);
+      console.tron.log(error);
     }
 
     setLoading(false);

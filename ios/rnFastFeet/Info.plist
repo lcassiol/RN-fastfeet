@@ -59,5 +59,7 @@
   </array>
   <key>NSCameraUsageDescription</key>
   <string>Para finalizar o pedido</string>
+  <key>NSMicrophoneUsageDescription</key>
+  <string></string>
 </dict>
 </plist>
