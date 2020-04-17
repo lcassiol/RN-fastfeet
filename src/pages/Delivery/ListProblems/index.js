@@ -29,7 +29,7 @@ export default function ListProblems({ route }) {
   useEffect(() => {
     async function loadProblems() {
       setLoading(true);
-      console.tron.log('CARREGANDOOOOO');
+
       try {
         const { data } = await api.get(`delivery/${deliveryId}/problems`);
         setProblems(data);

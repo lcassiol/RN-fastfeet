@@ -40,7 +40,8 @@ export default function Detail({ route, navigation }) {
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
   const userId = useSelector((state) => state.auth.id);
-  const dateWithdrawal = useMemo(
+
+  const withdrawalDate = useMemo(
     () =>
       delivery.start_date
         ? format(parseISO(delivery.start_date), 'dd / MM / yyyy')
@@ -60,16 +61,17 @@ export default function Detail({ route, navigation }) {
     if (delivery.end_date) {
       return 'Concluído';
     }
+
     if (delivery.canceled_at) {
       return 'Cancelado';
     }
+
     return 'Pendente';
   }, [delivery.end_date, delivery.canceled_at]);
 
   async function takeDelivery() {
     setLoading(true);
-    const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-    await sleep(5000);
+
     try {
       const { data } = await api.put(
         `/deliveryman/${userId}/delivery/${delivery.id}`,
@@ -179,7 +181,7 @@ export default function Detail({ route, navigation }) {
               <TwoRows>
                 <View>
                   <Label>Data de retirada</Label>
-                  <Text>{dateWithdrawal}</Text>
+                  <Text>{withdrawalDate}</Text>
                 </View>
 
                 <View>

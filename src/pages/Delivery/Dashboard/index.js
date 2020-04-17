@@ -78,17 +78,16 @@ function Dashboard({ navigation }) {
         data.map((item) => {
           const obj = {
             ...item,
-            createdAt: format(parseISO(item.createdAt), 'dd/MM/yyyy'),
             key: item.id < 10 ? `0${item.id}` : item.id,
             withdrawn: !!item.start_date,
             delivered: !!item.end_date,
+            createdAt: format(parseISO(item.createdAt), 'dd/MM/yyyy'),
           };
 
           return obj;
         })
       );
     } catch (error) {
-      console.tron.log('Erro!!');
       console.tron.log(error);
     }
 
