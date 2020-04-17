@@ -48,13 +48,3 @@ export const Date = styled.Text`
   color: #c1c1c1;
   font-size: 12px;
 `;
-
-export const NotRegister = styled(Problem)`
-  padding: 20px;
-  background: #cce5ff;
-  margin-top: 200px;
-`;
-
-export const TextNotRegister = styled.Text`
-  color: #004085;
-`;

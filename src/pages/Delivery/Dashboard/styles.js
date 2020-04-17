@@ -224,18 +224,3 @@ export const DetailText = styled.Text`
   font-size: 12px;
   font-weight: bold;
 `;
-
-export const NotRegister = styled.View`
-  width: 100%;
-  height: 59px;
-  align-content: center;
-  justify-content: center;
-  border-radius: 4px;
-  padding: 20px;
-  background: #cce5ff;
-  margin-top: 15px;
-`;
-
-export const TextNotRegister = styled.Text`
-  color: #004085;
-`;

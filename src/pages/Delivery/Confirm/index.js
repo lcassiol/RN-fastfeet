@@ -32,7 +32,7 @@ export default function Confirm({ route, navigation }) {
   const [loading, setLoading] = useState(false);
 
   const idUser = useSelector((state) => state.auth.id);
-  const { id: idDelivery } = route.params;
+  const { id: deliveryId } = route.params;
 
   const camera = useRef(null);
 
@@ -59,7 +59,7 @@ export default function Confirm({ route, navigation }) {
       });
       const response = await api.post('/files', data);
 
-      await api.put(`deliveryman/${idUser}/delivery/${idDelivery}`, {
+      await api.put(`deliveryman/${idUser}/delivery/${deliveryId}`, {
         signature_id: response.data.id,
         end_date: new Date(),
       });

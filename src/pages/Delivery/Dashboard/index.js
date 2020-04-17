@@ -9,6 +9,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import { useIsFocused } from '@react-navigation/native';
 
 import { signOut } from '~/store/modules/auth/actions';
+import EmptyResult from '~/components/EmptyResult';
 import api from '~/services/api';
 
 import {
@@ -45,8 +46,6 @@ import {
   Text,
   Details,
   DetailText,
-  NotRegister,
-  TextNotRegister,
   StatusTextContent,
 } from './styles';
 
@@ -144,9 +143,7 @@ function Dashboard({ navigation }) {
           </Filters>
         </Heading>
         {packages.length === 0 && !loading && (
-          <NotRegister>
-            <TextNotRegister>Não foram encontrados registros</TextNotRegister>
-          </NotRegister>
+          <EmptyResult text="Não foram encontrados registros" />
         )}
 
         <List
@@ -202,14 +199,9 @@ function Dashboard({ navigation }) {
 }
 
 Dashboard.propTypes = {
-  isFocused: PropTypes.bool,
   navigation: PropTypes.shape({
     navigate: PropTypes.func,
   }).isRequired,
-};
-
-Dashboard.defaultProps = {
-  isFocused: false,
 };
 
 export default Dashboard;

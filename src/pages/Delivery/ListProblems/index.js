@@ -7,6 +7,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 
 import api from '~/services/api';
 import CustomStatusBar from '~/components/CustomStatusBar';
+import EmptyResult from '~/components/EmptyResult';
 
 import {
   Container,
@@ -16,8 +17,6 @@ import {
   Problem,
   Description,
   Date,
-  NotRegister,
-  TextNotRegister,
   ProblemList,
 } from './styles';
 
@@ -59,11 +58,7 @@ export default function ListProblems({ route }) {
             textStyle={{ color: '#fff' }}
           />
           {problems.length < 1 && !loading && (
-            <NotRegister>
-              <TextNotRegister>
-                Nenhum registro de problema encontrado
-              </TextNotRegister>
-            </NotRegister>
+            <EmptyResult text="Nenhum registro de problema encontrado" />
           )}
           <ProblemList
             data={problems}
